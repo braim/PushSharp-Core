@@ -16,7 +16,7 @@ obj
 *.crx
 *.pem
 *.csproj.user
-
+*.xproj.user
 
 # mstest test results
 TestResults
