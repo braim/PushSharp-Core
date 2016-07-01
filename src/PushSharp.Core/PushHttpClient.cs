@@ -1,100 +1,141 @@
-﻿using System;
-using System.Net;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
-
-namespace PushSharp.Core
+﻿namespace PushSharp.Core
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public static class PushHttpClient
     {
-        static PushHttpClient ()
+        static PushHttpClient()
         {
+#if NET45
             ServicePointManager.DefaultConnectionLimit = 100;
-            ServicePointManager.Expect100Continue = false;
+#endif
         }
 
-        public static async Task<PushHttpResponse> RequestAsync (PushHttpRequest request)
+        public static async Task<PushHttpResponse> RequestAsync(PushHttpRequest pushRequest)
         {
-            var httpRequest = HttpWebRequest.CreateHttp (request.Url);
-            httpRequest.Proxy = null;
+            using (var httpClientHandler = new HttpClientHandler())
+            {
+#if NETSTANDARD16
+                httpClientHandler.MaxConnectionsPerServer = 100;
+#endif
+                httpClientHandler.UseProxy = false;
 
-            httpRequest.Headers = request.Headers;
+                using (var client = new HttpClient(httpClientHandler))
+                {
+                    client.DefaultRequestHeaders.ExpectContinue = false;
 
-            if (!string.IsNullOrEmpty (request.Body)) {
-                var requestStream = await httpRequest.GetRequestStreamAsync ();
+                    var request = new HttpRequestMessage
+                    {
+                        RequestUri = new Uri(pushRequest.Url),
+                        Method = pushRequest.HttpMethod,
+                    };
 
-                var requestBody = request.Encoding.GetBytes (request.Body);
+                    if (!string.IsNullOrEmpty(pushRequest.Body))
+                    {
+                        request.Content = new ByteArrayContent(pushRequest.Encoding.GetBytes(pushRequest.Body));
+                    }
 
-                await requestStream.WriteAsync (requestBody, 0, requestBody.Length);
+                    foreach (var headerKey in pushRequest.Headers.AllKeys)
+                    {
+                        request.Headers.Add(headerKey, pushRequest.Headers[headerKey]);
+                    }
+
+                    var response = await client.SendAsync(request);
+                    var responseBody = await response.Content.ReadAsStringAsync();
+
+                    var responseEncoding = Encoding.ASCII;
+                    try
+                    {
+                        responseEncoding = Encoding.GetEncoding(response.Content.Headers.ContentEncoding.FirstOrDefault());
+                    }
+                    catch
+                    {
+                    }
+
+                    var responseHeaders = new WebHeaderCollection();
+                    foreach (var header in response.Headers)
+                    {
+                        responseHeaders[header.Key] = header.Value.FirstOrDefault();
+                    }
+
+                    return new PushHttpResponse
+                    {
+                        Body = responseBody,
+                        Headers = responseHeaders,
+                        Uri = response.RequestMessage.RequestUri,
+                        Encoding = responseEncoding,
+                        LastModified = response.Content.Headers.LastModified.GetValueOrDefault().DateTime,
+                        StatusCode = response.StatusCode
+                    };
+                }
             }
-
-            HttpWebResponse httpResponse;
-            Stream responseStream;
-
-            try {
-                httpResponse = await httpRequest.GetResponseAsync () as HttpWebResponse;
-
-                responseStream = httpResponse.GetResponseStream ();
-            } catch (WebException webEx) {
-                httpResponse = webEx.Response as HttpWebResponse;
-
-                responseStream = httpResponse.GetResponseStream ();
-            }
-
-            var body = string.Empty;
-
-            using (var sr = new StreamReader (responseStream))
-                body = await sr.ReadToEndAsync ();
-                
-            var responseEncoding = Encoding.ASCII;
-            try {
-                responseEncoding = Encoding.GetEncoding (httpResponse.ContentEncoding);
-            } catch {
-            }
-
-            var response = new PushHttpResponse {
-                Body = body,
-                Headers = httpResponse.Headers,
-                Uri = httpResponse.ResponseUri,
-                Encoding = responseEncoding,
-                LastModified = httpResponse.LastModified,
-                StatusCode = httpResponse.StatusCode
-            };
-
-            httpResponse.Close ();
-            httpResponse.Dispose ();
-
-            return response;
         }
-
     }
 
     public class PushHttpRequest
     {
-        public PushHttpRequest ()
+        public PushHttpRequest()
         {
             Encoding = Encoding.ASCII;
-            Headers = new WebHeaderCollection ();
+            Headers = new WebHeaderCollection();
             Method = "GET";
             Body = string.Empty;
         }
 
-        public string Url { get;set; }
-        public string Method { get;set; }
-        public string Body { get;set; }
-        public WebHeaderCollection Headers { get;set; }
-        public Encoding Encoding { get;set; }
+        public string Url { get; set; }
+
+        public string Method { get; set; }
+
+        public string Body { get; set; }
+
+        public WebHeaderCollection Headers { get; set; }
+
+        public Encoding Encoding { get; set; }
+
+        public HttpMethod HttpMethod
+        {
+            get
+            {
+                switch (this.Method.ToUpperInvariant())
+                {
+                    case "delete":
+                        return HttpMethod.Delete;
+                    case "get":
+                        return HttpMethod.Get;
+                    case "head":
+                        return HttpMethod.Head;
+                    case "options":
+                        return HttpMethod.Options;
+                    case "post":
+                        return HttpMethod.Post;
+                    case "put":
+                        return HttpMethod.Put;
+                    case "trace":
+                        return HttpMethod.Trace;
+                    default:
+                        throw new NotSupportedException("Invalid HTTP method.");
+                }
+            }
+        }
     }
 
-    public class PushHttpResponse 
+    public class PushHttpResponse
     {
-        public HttpStatusCode StatusCode { get;set; }
-        public string Body { get;set; }
-        public WebHeaderCollection Headers { get;set; }
-        public Uri Uri { get;set; }
-        public Encoding Encoding { get;set; }
-        public DateTime LastModified { get;set; }
+        public HttpStatusCode StatusCode { get; set; }
+
+        public string Body { get; set; }
+
+        public WebHeaderCollection Headers { get; set; }
+
+        public Uri Uri { get; set; }
+
+        public Encoding Encoding { get; set; }
+
+        public DateTime LastModified { get; set; }
     }
 }
-

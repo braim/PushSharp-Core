@@ -1,12 +1,9 @@
-﻿using System;
-
-namespace PushSharp.Core
+﻿namespace PushSharp.Core
 {
-	public class NotificationBlockingCollection
+    public class NotificationBlockingCollection
 	{
 		public NotificationBlockingCollection ()
 		{
 		}
 	}
 }
-

@@ -9,16 +9,24 @@
   },
 
   "dependencies": {
-    "NETStandard.Library": "1.6.0"
   },
 
   "frameworks": {
-    "net45": {},
+    "net45": {
+      "dependencies": {
+        "System.Net.Http": "4.0.0"
+      }
+    },
     "netstandard1.6": {
       "imports": "dnxcore50",
+      "buildOptions": { "define": [ "NETSTANDARD16" ] },
       "dependencies": {
+        "NETStandard.Library": "1.6.0",
         "System.Net.WebHeaderCollection": "4.0.1",
-        "System.Net.Requests": "4.0.11"
+        "System.Net.Requests": "4.0.11",
+        "System.Net.Http.WinHttpHandler": "4.0.0",
+        "System.Collections": "4.0.11",
+        "System.Linq": "4.1.0"
       }
     }
   }

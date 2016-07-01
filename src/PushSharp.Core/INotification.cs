@@ -2,7 +2,7 @@
 {
     public interface INotification
     {
-        bool IsDeviceRegistrationIdValid ();
+        bool IsDeviceRegistrationIdValid();
 
         object Tag { get; set; }
     }
