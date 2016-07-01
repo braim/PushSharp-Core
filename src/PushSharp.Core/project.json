@@ -1,0 +1,25 @@
+{
+  "version": "1.0.0-*",
+  "description": "",
+  "authors": [ "redth" ],
+  "packOptions": {
+    "tags": [],
+    "projectUrl": "",
+    "licenseUrl": ""
+  },
+
+  "dependencies": {
+    "NETStandard.Library": "1.6.0"
+  },
+
+  "frameworks": {
+    "net45": {},
+    "netstandard1.6": {
+      "imports": "dnxcore50",
+      "dependencies": {
+        "System.Net.WebHeaderCollection": "4.0.1",
+        "System.Net.Requests": "4.0.11"
+      }
+    }
+  }
+}

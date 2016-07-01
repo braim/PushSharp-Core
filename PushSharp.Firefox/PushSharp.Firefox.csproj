@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -41,10 +41,4 @@
     <Compile Include="Exceptions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\PushSharp.Core\PushSharp.Core.csproj">
-      <Project>{2B44A8DA-60BC-4577-A2D7-D9D53F164B2E}</Project>
-      <Name>PushSharp.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>
