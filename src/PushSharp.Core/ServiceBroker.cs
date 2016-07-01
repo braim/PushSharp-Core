@@ -1,12 +1,12 @@
 ﻿namespace PushSharp.Core
 {
     using System;
-    using System.Linq;
     using System.Collections.Concurrent;
-    using System.Threading.Tasks;
-    using System.Threading;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     public class ServiceBroker<TNotification> : IServiceBroker<TNotification> where TNotification : INotification
     {

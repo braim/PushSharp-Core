@@ -1,10 +1,9 @@
-﻿using System;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-
-namespace PushSharp.Google
+﻿namespace PushSharp.Google
 {
+    using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+
     public class GcmResponse
     {
         public GcmResponse()
@@ -52,53 +51,52 @@ namespace PushSharp.Google
 
     public enum GcmResponseStatus
     {
-        [EnumMember (Value="Ok")]
+        [EnumMember(Value = "Ok")]
         Ok,
 
-        [EnumMember (Value="Error")]
+        [EnumMember(Value = "Error")]
         Error,
 
-        [EnumMember (Value="QuotaExceeded")]
+        [EnumMember(Value = "QuotaExceeded")]
         QuotaExceeded,
 
-        [EnumMember (Value="DeviceQuotaExceeded")]
+        [EnumMember(Value = "DeviceQuotaExceeded")]
         DeviceQuotaExceeded,
 
-        [EnumMember (Value="InvalidRegistration")]
+        [EnumMember(Value = "InvalidRegistration")]
         InvalidRegistration,
 
-        [EnumMember (Value="NotRegistered")]
+        [EnumMember(Value = "NotRegistered")]
         NotRegistered,
 
-        [EnumMember (Value="MessageTooBig")]
+        [EnumMember(Value = "MessageTooBig")]
         MessageTooBig,
 
-        [EnumMember (Value="MissingCollapseKey")]
+        [EnumMember(Value = "MissingCollapseKey")]
         MissingCollapseKey,
 
-        [EnumMember (Value="MissingRegistration")]
+        [EnumMember(Value = "MissingRegistration")]
         MissingRegistrationId,
 
-        [EnumMember (Value="Unavailable")]
+        [EnumMember(Value = "Unavailable")]
         Unavailable,
 
-        [EnumMember (Value="MismatchSenderId")]
+        [EnumMember(Value = "MismatchSenderId")]
         MismatchSenderId,
 
-        [EnumMember (Value="CanonicalRegistrationId")]
+        [EnumMember(Value = "CanonicalRegistrationId")]
         CanonicalRegistrationId,
 
-        [EnumMember (Value="InvalidDataKey")]
+        [EnumMember(Value = "InvalidDataKey")]
         InvalidDataKey,
 
-        [EnumMember (Value="InvalidTtl")]
+        [EnumMember(Value = "InvalidTtl")]
         InvalidTtl,
 
-        [EnumMember (Value="InternalServerError")]
+        [EnumMember(Value = "InternalServerError")]
         InternalServerError,
 
-        [EnumMember (Value="InvalidPackageName")]
+        [EnumMember(Value = "InvalidPackageName")]
         InvalidPackageName
     }
 }
-

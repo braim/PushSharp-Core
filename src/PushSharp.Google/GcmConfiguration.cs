@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace PushSharp.Google
+﻿namespace PushSharp.Google
 {
     public class GcmConfiguration
     {
         private const string GCM_SEND_URL = "https://gcm-http.googleapis.com/gcm/send";
 
-        public GcmConfiguration (string senderAuthToken)
+        public GcmConfiguration(string senderAuthToken)
         {
             this.SenderAuthToken = senderAuthToken;
             this.GcmUrl = GCM_SEND_URL;
@@ -14,7 +12,7 @@ namespace PushSharp.Google
             this.ValidateServerCertificate = false;
         }
 
-        public GcmConfiguration (string optionalSenderID, string senderAuthToken, string optionalApplicationIdPackageName)
+        public GcmConfiguration(string optionalSenderID, string senderAuthToken, string optionalApplicationIdPackageName)
         {
             this.SenderID = optionalSenderID;
             this.SenderAuthToken = senderAuthToken;
@@ -34,10 +32,9 @@ namespace PushSharp.Google
 
         public string GcmUrl { get; set; }
 
-        public void OverrideUrl (string url)
+        public void OverrideUrl(string url)
         {
             GcmUrl = url;
         }
     }
 }
-
