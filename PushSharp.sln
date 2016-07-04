@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushSharp.Tests", "PushSharp.Tests\PushSharp.Tests.csproj", "{989B7357-800E-46B9-91AF-A4CE8A55F389}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Libraries", "Support Libraries", "{6449DAB1-E76A-4354-B633-CC6AC53BB757}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0A212270-8BBD-4E32-9E30-B5B5F06E383E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E4F54018-2E85-43FC-9095-69B72113334F}"
@@ -37,15 +33,16 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PushSharp.Amazon", "src\Pus
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PushSharp.Blackberry", "src\PushSharp.Blackberry\PushSharp.Blackberry.xproj", "{84D18200-9EAA-4ED5-86A0-6F20AA931BF9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{1511F27A-205A-49F8-9DB7-CDE88023C732}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PushSharp.Tests", "test\PushSharp.Tests\PushSharp.Tests.xproj", "{114B5DB6-29DD-4552-990D-5800993052AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{989B7357-800E-46B9-91AF-A4CE8A55F389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{989B7357-800E-46B9-91AF-A4CE8A55F389}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{989B7357-800E-46B9-91AF-A4CE8A55F389}.Release|Any CPU.Build.0 = Release|Any CPU
 		{49303EC4-7C7F-444C-B17B-5F0D8D23635F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{49303EC4-7C7F-444C-B17B-5F0D8D23635F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49303EC4-7C7F-444C-B17B-5F0D8D23635F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -74,6 +71,10 @@ Global
 		{84D18200-9EAA-4ED5-86A0-6F20AA931BF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84D18200-9EAA-4ED5-86A0-6F20AA931BF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84D18200-9EAA-4ED5-86A0-6F20AA931BF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{114B5DB6-29DD-4552-990D-5800993052AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{114B5DB6-29DD-4552-990D-5800993052AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{114B5DB6-29DD-4552-990D-5800993052AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{114B5DB6-29DD-4552-990D-5800993052AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,5 +88,6 @@ Global
 		{A48219B8-6734-4274-8881-3FB31AA98C84} = {719A4573-617F-438D-914F-B317102449CE}
 		{BD225D78-BCA6-4096-8CEC-8C3DA455DFBF} = {719A4573-617F-438D-914F-B317102449CE}
 		{84D18200-9EAA-4ED5-86A0-6F20AA931BF9} = {719A4573-617F-438D-914F-B317102449CE}
+		{114B5DB6-29DD-4552-990D-5800993052AD} = {1511F27A-205A-49F8-9DB7-CDE88023C732}
 	EndGlobalSection
 EndGlobal
