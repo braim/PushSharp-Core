@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PushSharp.Blackberry
+﻿namespace PushSharp.Blackberry
 {
     public class BlackberryMessageStatus
     {
@@ -13,7 +11,7 @@ namespace PushSharp.Blackberry
 
     public enum BlackberryNotificationStatus
     {
-        NotAvailable=0,
+        NotAvailable = 0,
         /// <summary>
         /// The request was completed successfully
         /// </summary>
@@ -138,4 +136,3 @@ namespace PushSharp.Blackberry
         SpecifiedRequestInternalError = 23000
     }
 }
-

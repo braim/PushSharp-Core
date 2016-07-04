@@ -1,49 +1,49 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Net;
-using System.Xml.Linq;
-using System.Linq;
-using PushSharp.Core;
-
-namespace PushSharp.Blackberry
+﻿namespace PushSharp.Blackberry
 {
+    using Core;
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Threading.Tasks;
+    using System.Xml.Linq;
+
     public class BlackberryServiceConnectionFactory : IServiceConnectionFactory<BlackberryNotification>
     {
-        public BlackberryServiceConnectionFactory (BlackberryConfiguration configuration)
+        public BlackberryServiceConnectionFactory(BlackberryConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public BlackberryConfiguration Configuration { get; private set; }
+        public BlackberryConfiguration Configuration { get; }
 
         public IServiceConnection<BlackberryNotification> Create()
         {
-            return new BlackberryServiceConnection (Configuration);
+            return new BlackberryServiceConnection(Configuration);
         }
     }
 
     public class BlackberryServiceBroker : ServiceBroker<BlackberryNotification>
     {
-        public BlackberryServiceBroker (BlackberryConfiguration configuration) : base (new BlackberryServiceConnectionFactory (configuration))
+        public BlackberryServiceBroker(BlackberryConfiguration configuration) : base(new BlackberryServiceConnectionFactory(configuration))
         {
         }
     }
 
     public class BlackberryServiceConnection : IServiceConnection<BlackberryNotification>
     {
-        public BlackberryServiceConnection (BlackberryConfiguration configuration)
+        private readonly BlackberryHttpClient http;
+
+        public BlackberryServiceConnection(BlackberryConfiguration configuration)
         {
             Configuration = configuration;
-            http = new BlackberryHttpClient (Configuration);
+            http = new BlackberryHttpClient(Configuration);
         }
 
-        public BlackberryConfiguration Configuration { get; private set; }
+        public BlackberryConfiguration Configuration { get; }
 
-        readonly BlackberryHttpClient http;
-
-        public async Task Send (BlackberryNotification notification)
-        {                        
-            var response = await http.PostNotification (notification);
+        public async Task Send(BlackberryNotification notification)
+        {
+            var response = await http.PostNotification(notification);
             var description = string.Empty;
 
             var status = new BlackberryMessageStatus
@@ -55,8 +55,8 @@ namespace PushSharp.Blackberry
             var bbNotStatus = string.Empty;
             status.HttpStatus = response.StatusCode;
 
-            var xmlContent = await response.Content.ReadAsStreamAsync ();
-            var doc = XDocument.Load (xmlContent);
+            var xmlContent = await response.Content.ReadAsStreamAsync();
+            var doc = XDocument.Load(xmlContent);
 
             XElement result = doc.Descendants().FirstOrDefault(desc =>
                 desc.Name == "response-result" ||
@@ -72,15 +72,17 @@ namespace PushSharp.Blackberry
             status.NotificationStatus = notStatus;
 
             if (status.NotificationStatus == BlackberryNotificationStatus.NoAppReceivePush)
-                throw new DeviceSubscriptionExpiredException (notification);
+            {
+                throw new DeviceSubscriptionExpiredException(notification);
+            }
 
             if (status.HttpStatus == HttpStatusCode.OK
                 && status.NotificationStatus == BlackberryNotificationStatus.RequestAcceptedForProcessing)
+            {
                 return;
-            
-            throw new BlackberryNotificationException (status, description, notification);
-            
+            }
+
+            throw new BlackberryNotificationException(status, description, notification);
         }
     }
 }
-

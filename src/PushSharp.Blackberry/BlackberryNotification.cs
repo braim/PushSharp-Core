@@ -1,12 +1,13 @@
-﻿using System;
-using PushSharp.Core;
-using System.Collections.Generic;
-using System.Xml.Linq;
-using System.Text;
-using System.Globalization;
-
-namespace PushSharp.Blackberry
+﻿namespace PushSharp.Blackberry
 {
+    using Core;
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Net;
+    using System.Text;
+    using System.Xml.Linq;
+
     public enum QualityOfServiceLevel
     {
         NotSpecified,
@@ -19,22 +20,22 @@ namespace PushSharp.Blackberry
     {
         public BlackberryNotification()
         {
-            PushId = Guid.NewGuid ().ToString ();
-            Recipients = new List<BlackberryRecipient> ();
+            PushId = Guid.NewGuid().ToString();
+            Recipients = new List<BlackberryRecipient>();
             DeliverBeforeTimestamp = DateTime.UtcNow.AddMinutes(5);
             QualityOfService = QualityOfServiceLevel.Unconfirmed;
         }
 
-        public bool IsDeviceRegistrationIdValid ()
+        public bool IsDeviceRegistrationIdValid()
         {
             return true;
         }
 
-        public object Tag { get;set; }
+        public object Tag { get; set; }
 
-        public string PushId { get; private set; }
+        public string PushId { get; }
 
-        public QualityOfServiceLevel QualityOfService { get;set; }
+        public QualityOfServiceLevel QualityOfService { get; set; }
 
         /// <summary>
         /// Address (e.g. URL) that Blackberry push service could use for notification 
@@ -54,7 +55,7 @@ namespace PushSharp.Blackberry
         /// </summary>
         public DateTime? DeliverAfterTimestamp { get; set; }
 
-        public List<BlackberryRecipient> Recipients { get;set; }
+        public List<BlackberryRecipient> Recipients { get; set; }
 
         public string SourceReference { get; set; }
 
@@ -62,26 +63,33 @@ namespace PushSharp.Blackberry
 
         public string ToPapXml()
         {
-            var doc = new XDocument ();
+            var doc = new XDocument();
 
             var docType = new XDocumentType("pap", "-//WAPFORUM//DTD PAP 2.1//EN", "http://www.openmobilealliance.org/tech/DTD/pap_2.1.dtd", "<?wap-pap-ver supported-versions=\"2.0\"?>");
 
-            doc.AddFirst (docType);
+            doc.AddFirst(docType);
 
-            var pap = new XElement ("pap");
+            var pap = new XElement("pap");
 
-            var pushMsg = new XElement ("push-message");
+            var pushMsg = new XElement("push-message");
 
-            pushMsg.Add (new XAttribute ("push-id", this.PushId));
+            pushMsg.Add(new XAttribute("push-id", this.PushId));
             pushMsg.Add(new XAttribute("source-reference", this.SourceReference));
 
-            if (!string.IsNullOrEmpty (this.PpgNotifyRequestedTo))
+            if (!string.IsNullOrEmpty(this.PpgNotifyRequestedTo))
+            {
                 pushMsg.Add(new XAttribute("ppg-notify-requested-to", this.PpgNotifyRequestedTo));
+            }
 
             if (this.DeliverAfterTimestamp.HasValue)
-                pushMsg.Add (new XAttribute ("deliver-after-timestamp", this.DeliverAfterTimestamp.Value.ToUniversalTime ().ToString("s", CultureInfo.InvariantCulture) + "Z"));
+            {
+                pushMsg.Add(new XAttribute("deliver-after-timestamp", this.DeliverAfterTimestamp.Value.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture) + "Z"));
+            }
+
             if (this.DeliverBeforeTimestamp.HasValue)
-                pushMsg.Add (new XAttribute ("deliver-before-timestamp", this.DeliverBeforeTimestamp.Value.ToUniversalTime ().ToString("s", CultureInfo.InvariantCulture) + "Z"));
+            {
+                pushMsg.Add(new XAttribute("deliver-before-timestamp", this.DeliverBeforeTimestamp.Value.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture) + "Z"));
+            }
 
             //Add all the recipients
             foreach (var r in Recipients)
@@ -92,28 +100,24 @@ namespace PushSharp.Blackberry
 
                 if (!string.IsNullOrEmpty(r.RecipientType))
                 {
-                    addrValue = string.Format("WAPPUSH={0}%3A{1}/TYPE={2}", System.Web.HttpUtility.UrlEncode(r.Recipient),
-                        r.Port, r.RecipientType);
+                    addrValue = string.Format(
+                        "WAPPUSH={0}%3A{1}/TYPE={2}",
+                        WebUtility.UrlEncode(r.Recipient),
+                        r.Port,
+                        r.RecipientType);
                 }
 
                 address.Add(new XAttribute("address-value", addrValue));
-                pushMsg.Add (address);
+                pushMsg.Add(address);
             }
 
-            pushMsg.Add (new XElement ("quality-of-service", new XAttribute ("delivery-method", this.QualityOfService.ToString ().ToLowerInvariant ())));
+            pushMsg.Add(new XElement("quality-of-service", new XAttribute("delivery-method", this.QualityOfService.ToString().ToLowerInvariant())));
 
             pap.Add(pushMsg);
-            doc.Add (pap);
+            doc.Add(pap);
 
-            return "<?xml version=\"1.0\"?>" + Environment.NewLine + doc.ToString (SaveOptions.None);
+            return "<?xml version=\"1.0\"?>" + Environment.NewLine + doc.ToString(SaveOptions.None);
         }
-
-
-        protected string XmlEncode(string text)
-        {
-            return System.Security.SecurityElement.Escape(text);
-        }
-
     }
 
     public class BlackberryRecipient
@@ -130,14 +134,15 @@ namespace PushSharp.Blackberry
             RecipientType = recipientType;
         }
 
-        public string Recipient { get;set; }
-        public int Port { get;set; }
-        public string RecipientType { get;set; }
+        public string Recipient { get; set; }
+
+        public int Port { get; set; }
+
+        public string RecipientType { get; set; }
     }
 
     public class BlackberryMessageContent
     {
-
         public BlackberryMessageContent(string contentType, string content)
         {
             this.Headers = new Dictionary<string, string>();
@@ -159,10 +164,10 @@ namespace PushSharp.Blackberry
             this.Content = content;
         }
 
-        public string ContentType { get; private set; }
-        public byte[] Content { get; private set; }
+        public string ContentType { get; }
 
-        public Dictionary<string, string> Headers { get; private set; } 
+        public byte[] Content { get; }
+
+        public Dictionary<string, string> Headers { get; }
     }
 }
-

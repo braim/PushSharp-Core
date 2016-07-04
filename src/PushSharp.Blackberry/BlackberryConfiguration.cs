@@ -1,27 +1,28 @@
-﻿using System;
-
-namespace PushSharp.Blackberry
+﻿namespace PushSharp.Blackberry
 {
-    public class BlackberryConfiguration
-    {   
-        const string SEND_URL = "https://pushapi.eval.blackberry.com/mss/PD_pushRequest";
+    using System;
 
-        public BlackberryConfiguration ()
+    public class BlackberryConfiguration
+    {
+        private const string SEND_URL = "https://pushapi.eval.blackberry.com/mss/PD_pushRequest";
+
+        public BlackberryConfiguration()
         {
             SendUrl = SEND_URL;
         }
 
-        public BlackberryConfiguration (string applicationId, string password)
+        public BlackberryConfiguration(string applicationId, string password)
         {
             ApplicationId = applicationId;
             Password = password;
             SendUrl = SEND_URL;
         }
 
-        public string ApplicationId { get; set; }
-        public string Password { get; set; }
-        public string Boundary { get { return "ASDFaslkdfjasfaSfdasfhpoiurwqrwm"; } }
+        public string ApplicationId { get; }
 
+        public string Password { get; }
+
+        public string Boundary { get { return "ASDFaslkdfjasfaSfdasfhpoiurwqrwm"; } }
 
         /// <summary>
         /// Push Proxy Gateway (PPG) Url is used for submitting push requests
@@ -38,15 +39,14 @@ namespace PushSharp.Blackberry
         /// where xxx should be replaced with CPID (Content Provider ID)</param>
         public void OverrideSendUrl(string url)
         {
-            if (!string.IsNullOrWhiteSpace(url))
+            if (!string.IsNullOrWhiteSpace(url)
+                && (url.EndsWith("pushapi.na.blackberry.com", StringComparison.OrdinalIgnoreCase)
+                    || url.EndsWith("pushapi.eval.blackberry.com", StringComparison.OrdinalIgnoreCase)))
             {
-                if (url.EndsWith("pushapi.na.blackberry.com", StringComparison.InvariantCultureIgnoreCase) ||
-                    url.EndsWith("pushapi.eval.blackberry.com", StringComparison.InvariantCultureIgnoreCase))
-                    url = url + @"/mss/PD_pushRequest";
+                url = url + @"/mss/PD_pushRequest";
             }
+
             SendUrl = url;
         }
-    
     }
 }
-
