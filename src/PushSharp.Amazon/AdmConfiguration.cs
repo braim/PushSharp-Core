@@ -1,13 +1,13 @@
-﻿using System;
-
-namespace PushSharp.Amazon
+﻿namespace PushSharp.Amazon
 {
+    using System;
+
     public class AdmConfiguration
     {
-        const string ADM_SEND_URL = "https://api.amazon.com/messaging/registrations/{0}/messages";
-        const string ADM_AUTH_URL = "https://api.amazon.com/auth/O2/token";
+        private const string ADM_SEND_URL = "https://api.amazon.com/messaging/registrations/{0}/messages";
+        private const string ADM_AUTH_URL = "https://api.amazon.com/auth/O2/token";
 
-        public AdmConfiguration (string clientId, string clientSecret)
+        public AdmConfiguration(string clientId, string clientSecret)
         {
             ClientId = clientId;
             ClientSecret = clientSecret;
@@ -15,10 +15,12 @@ namespace PushSharp.Amazon
             AdmAuthUrl = ADM_AUTH_URL;
         }
 
-        public string ClientId { get; private set; }
-        public string ClientSecret { get; private set; }
+        public string ClientId { get; }
+
+        public string ClientSecret { get; }
 
         public string AdmSendUrl { get; private set; }
+
         public string AdmAuthUrl { get; private set; }
 
         public void OverrideSendUrl(string url)
@@ -32,4 +34,3 @@ namespace PushSharp.Amazon
         }
     }
 }
-
