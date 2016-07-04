@@ -1,10 +1,10 @@
-﻿using System;
-using PushSharp.Core;
-
-namespace PushSharp.Firefox
+﻿namespace PushSharp.Firefox
 {
+    using Core;
+    using System;
+
     public class FirefoxNotification : INotification
-    {        
+    {
         /// <summary>
         /// Gets or sets Unique URL to be used by the AppServer to initiate a response from the App.
         /// </summary>
@@ -32,7 +32,7 @@ namespace PushSharp.Firefox
         }
 
         #region INotification implementation
-        public bool IsDeviceRegistrationIdValid ()
+        public bool IsDeviceRegistrationIdValid()
         {
             return true;
         }
