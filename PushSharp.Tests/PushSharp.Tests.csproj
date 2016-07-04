@@ -56,10 +56,6 @@
       <Project>{2468C63B-C964-4FC3-9B16-13DC17CF7D11}</Project>
       <Name>PushSharp.Amazon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PushSharp.Windows\PushSharp.Windows.csproj">
-      <Project>{DC80552B-6730-44AA-9B74-1E036BD909C3}</Project>
-      <Name>PushSharp.Windows</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

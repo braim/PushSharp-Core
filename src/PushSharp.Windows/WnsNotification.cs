@@ -1,25 +1,26 @@
-﻿using PushSharp.Core;
-using System.Xml.Linq;
-
-namespace PushSharp.Windows
+﻿namespace PushSharp.Windows
 {
+    using Core;
+    using System.Xml.Linq;
+
     public abstract class WnsNotification : INotification
     {
         public string ChannelUri { get; set; }
 
         public bool? RequestForStatus { get; set; }
+
         public int? TimeToLive { get; set; }
 
         public XElement Payload { get; set; }
 
         public abstract WnsNotificationType Type { get; }
 
+        public object Tag { get; set; }
+
         public bool IsDeviceRegistrationIdValid ()
         {
             return true;
         }
-
-        public object Tag { get; set; }
     }
 
     public class WnsTileNotification : WnsNotification
@@ -51,6 +52,4 @@ namespace PushSharp.Windows
 
         public WnsNotificationCachePolicyType? CachePolicy { get; set; }
     }
-
 }
-

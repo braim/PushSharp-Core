@@ -1,14 +1,15 @@
-﻿using System;
-
-namespace PushSharp.Windows
+﻿namespace PushSharp.Windows
 {
     public class WnsNotificationStatus
     {
         public string MessageId { get; set; }
+
         public string DebugTrace { get; set; }
+
         public string ErrorDescription { get; set; }
 
         public WnsNotificationSendStatus NotificationStatus { get; set; }
+
         public WnsDeviceConnectionStatus DeviceConnectionStatus { get; set; }
 
         public WnsNotification Notification { get; set; }
@@ -44,4 +45,3 @@ namespace PushSharp.Windows
         Raw
     }
 }
-
