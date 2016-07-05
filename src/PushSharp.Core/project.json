@@ -1,6 +1,6 @@
 {
   "version": "4.1.10",
-  "description": "",
+  "description": "A server-side library for sending Push Notifications to iOS (iPhone/iPad APNS), Android (C2DM and GCM - Google Cloud Message), Windows Phone, Windows 8, Amazon, Blackberry, and (soon) FirefoxOS devices!",
   "authors": [ "redth" ],
   "packOptions": {
     "tags": [],

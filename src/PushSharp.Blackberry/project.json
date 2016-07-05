@@ -1,6 +1,6 @@
 ﻿{
   "version": "4.1.10",
-  "description": "",
+  "description": "Blackberry PushSharp provider",
   "authors": [ "redth" ],
   "packOptions": {
     "tags": [],
